@@ -19,14 +19,15 @@ import model.User;
 
 
 public class Secure {
-	static String IV = "AAAAAAAAAAAAAAAA";
+	public static String salt = "s>uzgQ}#,NR6,(T&.asf";
+	private static String IV = "AAAAAAAAAAAAAAAA";
 	
 	public String hash_SHA1(String body){
 		String hashValue = DigestUtils.sha1Hex(body);
 		return hashValue;
 	}
 	
-	public String encryptionSubAccount(User user){
+	public String encryptionSubAccount(User user){	
 		//Serialization
 		List<SubAccount> subAccounArraytList = user.getSubAccount();
 		byte[] bytesOfSubAccount = null;
@@ -38,10 +39,10 @@ public class Secure {
 			System.out.println("Error in encrypting subAccount!");
 			return null;
 		}		
-		//encryption
+		//encryption	AES-128bits
 		String output = null;
-		String encryptionKey = DigestUtils.sha1Hex(user.getUsername() + user.getPassword());	//modify later
-		encryptionKey = encryptionKey.substring(0,16);
+		String encryptionKey = DigestUtils.sha512Hex(user.getUsername() + user.getPassword() + salt);
+		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
 		try {
 			byte[] cipher = encrypt(serializedString, encryptionKey);
 			output = new String(cipher, "ISO-8859-1");
@@ -53,10 +54,10 @@ public class Secure {
 		return output;
 	}
 	
-	public List<SubAccount> decryptionSubAccount(String userName, String password, String cipher) {
-		//decryption
-		String encryptionKey = DigestUtils.sha1Hex(userName + password);	//modify later
-		encryptionKey = encryptionKey.substring(0,16);
+	public List<SubAccount> decryptionSubAccount(String userName, String password, String cipher) {	
+		//decryption	AES-128bits
+		String encryptionKey = DigestUtils.sha512Hex(userName + password + salt);
+		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
 		String decrypted = null;
 		try {
 			byte[] cipherinBytes = cipher.getBytes("ISO-8859-1");
@@ -89,7 +90,8 @@ public class Secure {
 	public List<SubAccount> keyGenerator(User user, String masterKey, int lengthOfPassword){
 		List<SubAccount> subAccount = user.getSubAccount();
 		for(int i=0;i<subAccount.size();i++){
-			subAccount.get(i).setPassword("testing_testing_12345678");
+			String hash = DigestUtils.sha512Hex(user.getUsername()+user.getPassword()+masterKey+subAccount.get(i).getDomain()+subAccount.get(i).getUsername() + salt);
+			subAccount.get(i).setPassword(passwordGeneratorBasedOnHashString(hash,lengthOfPassword));
 		}
 		return subAccount;
 	}
@@ -146,5 +148,27 @@ public class Secure {
 	    SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
 	    cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
 	    return new String(cipher.doFinal(cipherText),"UTF-8");
+	}
+	
+	private static String passwordGeneratorBasedOnHashString(String hash,int lengthOfPassword){
+		if(hash.length()/2<lengthOfPassword){
+			System.out.println("Length of password is too large!\n");
+			return null;
+		}
+		String output = "";
+		for(int i = 0;i<hash.length() && output.length() <lengthOfPassword;i=i+2){
+			if(i+2>hash.length()) break;
+			String partOfHex = hash.substring(i,i+2);
+			int value = Integer.parseInt(partOfHex, 16); 
+			output += mapAlphaNum(value);
+		}	
+		return output;
+	}
+	
+	private static String mapAlphaNum(int input) {
+		String alphanum =
+			"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@#$%^&?*()_+-=,./|{}[]'`<>\\";	//size = 91
+		int position = input%alphanum.length();
+		return alphanum.substring(position,position+1);
 	}
 }
