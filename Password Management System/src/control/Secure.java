@@ -13,10 +13,10 @@ public class Secure {
 		String hashValue = DigestUtils.sha1Hex(body);
 		return hashValue;
 	}
-	public String encrytion(List<SubAccount> subAccount){
+	public String encrytionSubAccount(User user){
 		return null;
 	}
-	public List<SubAccount> decrytion(String cipher){
+	public List<SubAccount> decrytionSubAccount(String userName, String password, String cipher){
 		return null;
 	}
 	
