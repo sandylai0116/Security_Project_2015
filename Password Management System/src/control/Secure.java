@@ -94,7 +94,7 @@ public class Secure {
 		return subAccount;
 	}
 	
-	public static byte[] toByteArray(Object obj) throws IOException {
+	private static byte[] toByteArray(Object obj) throws IOException {
 		byte[] bytes = null;
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
@@ -115,7 +115,7 @@ public class Secure {
         return bytes;
 	}
 
-	public static Object toObject(byte[] bytes) throws IOException, ClassNotFoundException {
+	private static Object toObject(byte[] bytes) throws IOException, ClassNotFoundException {
         Object obj = null;
         ByteArrayInputStream bis = null;
         ObjectInputStream ois = null;
@@ -134,17 +134,17 @@ public class Secure {
         return obj;
     }
 	
-	public static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
+	private static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
 	    Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 	    SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
 	    cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
 	    return cipher.doFinal(plainText.getBytes("UTF-8"));
 	  }
 
-	  public static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
+	private static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
 	    Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 	    SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
 	    cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
 	    return new String(cipher.doFinal(cipherText),"UTF-8");
-	  }
+	}
 }
