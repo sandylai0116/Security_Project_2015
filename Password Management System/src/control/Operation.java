@@ -56,7 +56,7 @@ public class Operation {
 	}
 	//not yet defined
 	public ArrayList<String> displayDomain(String body){
-		secure.decrytion(body);
+		//secure.decrytion(body);
 		return null;
 	}
 	/*public ArrayList<String> keyGen(ArrayList<String> domain, String masterKey){
