@@ -1,4 +1,4 @@
-package security;
+package control;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
