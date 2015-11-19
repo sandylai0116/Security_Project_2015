@@ -23,7 +23,7 @@ public class Secure {
 	private static String IV = "AAAAAAAAAAAAAAAA";
 	
 	public String hash_SHA1(String body){
-		String hashValue = DigestUtils.sha1Hex(body);
+		String hashValue = DigestUtils.sha1Hex(body + salt);
 		return hashValue;
 	}
 	
