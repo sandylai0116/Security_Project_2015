@@ -11,7 +11,7 @@ public class Operation {
 	private HashMap<String,String> user;
 	private String username;
 	private String pw;
-	Operation(String path){
+	public Operation(String path){
 		readIO = new ReadIO(path);
 		secure = new Secure();
 		this.username = "";
