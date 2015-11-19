@@ -27,27 +27,11 @@ import javax.swing.JPasswordField;
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private ArrayList<JButton> keys;
 	private JTextField textField_username;
 	private JPasswordField passwordField;
 	private JTextArea textArea;
+	private ArrayList<JButton> keys;
 	private JButton clear;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -61,8 +45,10 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		Font bold24 = new Font("Times New Roman", Font.BOLD, 24);
+		
 		JPanel keyPadJPanel = new JPanel();
-		keyPadJPanel.setBounds(237, 78, 187, 173);
+		keyPadJPanel.setBounds(237, 48, 187, 203);
 		contentPane.add(keyPadJPanel);
 		keyPadJPanel.setLayout(new GridLayout(4, 3, 2, 2));
 		
@@ -79,8 +65,8 @@ public class Login extends JFrame {
 		contentPane.add(panel_2);
 		
 		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setFont(new Font("Times New Roman", Font.BOLD, 24));
-		lblLogin.setBounds(186, 22, 69, 35);
+		lblLogin.setFont(bold24);
+		lblLogin.setBounds(186, 10, 69, 28);
 		contentPane.add(lblLogin);
 		
 		JButton btnLogin = new JButton("Login");
@@ -107,12 +93,14 @@ public class Login extends JFrame {
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setBackground(SystemColor.control);
-		textArea.setBounds(10, 78, 227, 67);
+		textArea.setBounds(10, 48, 227, 97);
 		textArea.setFont(new Font("Times New Roma", Font.PLAIN, 14));
 		textArea.setLineWrap(true); 
 		textArea.setWrapStyleWord(true);
 		contentPane.add(textArea);
 		setText("Welcome to Password Management System!");
+		
+		
 		
 		keys = new ArrayList<JButton>();
 		for (int i = 0; i < 10; i++)
@@ -120,12 +108,12 @@ public class Login extends JFrame {
 		Collections.shuffle(keys);
 		for (int i = 0; i < 10; i++){
 			JButton btn = keys.get(i);
-			btn.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+			btn.setFont(bold24);
 			keyPadJPanel.add(btn);
 		}
 		
 		clear = new JButton("C");
-		clear.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+		clear.setFont(bold24);
 		keyPadJPanel.add(clear);
 		
 		RegisterButtonListener registerHandler = new RegisterButtonListener();
