@@ -149,12 +149,23 @@ public class Register extends JFrame {
 	
 	private class RegisterButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			String username = textField_username.getText();
+			final String username = textField_username.getText();
 			String password = String.valueOf(passwordField.getPassword());
 			if(username.isEmpty() || password.isEmpty())
 				setText("Please enter username or password.");
-			else
-				setText("");
+			else {
+				dispose();
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							MainPage mainPage = new MainPage(username);
+							mainPage.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});	
+			}
 		} 
 	} 
 	
