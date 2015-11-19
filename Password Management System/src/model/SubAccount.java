@@ -1,6 +1,8 @@
 package model;
 
-public class SubAccount {
+import java.io.Serializable;
+
+public class SubAccount implements Serializable{
 	private String domain;
 	private String username;
 	private String password;
