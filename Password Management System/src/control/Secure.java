@@ -1,6 +1,7 @@
-package control;
+package security;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -10,19 +11,19 @@ public class Secure {
 		String hashValue = DigestUtils.sha1Hex(body);
 		return hashValue;
 	}
-	public String encrytion(ArrayList<String> domain){
+	public String encrytion(HashMap<String,String> domain_username){
 		return null;
 	}
-	public String decrytion(String body){
+	public HashMap<String,String> decrytion(String body){
 		return null;
 	}
-	public String integrityEncrypt(String body){
+	public String integrityEncrypt(String wholeBody){
 		return null;
 	}
-	public boolean integrityCheck(String key, String body){
+	public boolean integrityCheck(String key, String wholeBody){
 		return false;
 	}
-	public String keyGenerator(String body, String masterKey, String userInfo){
+	public HashMap<String,String> keyGenerator(HashMap<String,String> domain_username, String masterKey, String username,String pw, int sizeOfPw){
 		return null;
 	}
 }

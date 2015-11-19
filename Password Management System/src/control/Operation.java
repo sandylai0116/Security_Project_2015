@@ -1,4 +1,4 @@
-package control;
+package security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ public class Operation {
 	public boolean init(){
 		try {
 			user = readIO.get();
-			if (!secure.integrityCheck(user.get("integrity"),user.get("body"))){
-				return false;
+			if (user != null){
+				if (!secure.integrityCheck(user.get("integrity"),user.get("body"))){
+					return false;
+				}
+				user.remove("integrity");
+				user.remove("body");	//remove useless dump data
 			}
-			user.remove("integrity");
-			user.remove("body");	//remove useless dump data
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -50,12 +50,16 @@ public class Operation {
 		else
 			return true;
 	}
+	public void register(String username, String pw){
+		this.username = username;
+		this.pw = pw;
+	}
 	//not yet defined
 	public ArrayList<String> displayDomain(String body){
 		secure.decrytion(body);
 		return null;
 	}
-	public ArrayList<String> keyGen(ArrayList<String> domain, String masterKey){
+	/*public ArrayList<String> keyGen(ArrayList<String> domain, String masterKey){
 		ArrayList<String> key = new ArrayList<String>();
 		for (String eachDomain: domain){
 			key.add(secure.keyGenerator(eachDomain, masterKey, this.username.concat(this.pw)));
@@ -63,10 +67,11 @@ public class Operation {
 		return key;
 	}
 	public void saveChanges(ArrayList<String> domain) throws IOException{
+		readIO.put_start();
 		String h1 = secure.hash_SHA1(this.username);
 		String h2 = secure.hash_SHA1(this.pw);
 		String whole = "";
-		user.remove(h1.concat(h2));
+		user.remove(h1.concat(h2));// null when new user
 		for (Map.Entry<String, String> each : user.entrySet())
 		{
 			readIO.put(each.getKey(),each.getValue());
@@ -77,5 +82,5 @@ public class Operation {
 		readIO.put(h1.concat(h2), cipher);
 		readIO.put(secure.integrityEncrypt(whole),"");
 		readIO.writeClose();
-	}
+	}*/
 }
