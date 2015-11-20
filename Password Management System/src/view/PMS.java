@@ -1,21 +1,16 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class PMS {
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                new PMSCardLayout();
+            }
+        });
 	}
 }
