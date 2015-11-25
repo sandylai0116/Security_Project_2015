@@ -27,9 +27,9 @@ public class Secure {
 		return hashValue;
 	}
 	
-	public String encryptionSubAccount(User user){	
+	public String encryptionSubAccount(String username, String pw, List<SubAccount> subAccounArraytList){	
 		//Serialization
-		List<SubAccount> subAccounArraytList = user.getSubAccount();
+		//List<SubAccount> subAccounArraytList = user.getSubAccount();
 		byte[] bytesOfSubAccount = null;
 		String serializedString = null;
 		try {
@@ -41,7 +41,7 @@ public class Secure {
 		}		
 		//encryption	AES-128bits
 		String output = null;
-		String encryptionKey = DigestUtils.sha512Hex(user.getUsername() + user.getPassword() + salt);
+		String encryptionKey = DigestUtils.sha512Hex(username + pw + salt);
 		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
 		try {
 			byte[] cipher = encrypt(serializedString, encryptionKey);
@@ -87,10 +87,9 @@ public class Secure {
 		if(key.equals(hash_SHA1(fileContent))) return true;
 		else return false;
 	}
-	public List<SubAccount> keyGenerator(User user, String masterKey, int lengthOfPassword){
-		List<SubAccount> subAccount = user.getSubAccount();
+	public List<SubAccount> keyGenerator(String username,String password, List<SubAccount> subAccount, String masterKey, int lengthOfPassword){
 		for(int i=0;i<subAccount.size();i++){
-			String hash = DigestUtils.sha512Hex(user.getUsername()+user.getPassword()+masterKey+subAccount.get(i).getDomain()+subAccount.get(i).getUsername() + salt);
+			String hash = DigestUtils.sha512Hex(username+password+masterKey+subAccount.get(i).getDomain()+subAccount.get(i).getUsername() + salt);
 			subAccount.get(i).setPassword(passwordGeneratorBasedOnHashString(hash,lengthOfPassword));
 		}
 		return subAccount;

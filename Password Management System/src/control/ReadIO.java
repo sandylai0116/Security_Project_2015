@@ -29,6 +29,8 @@ public class ReadIO {
 		if (file.exists()){
 			read = new BufferedReader(new FileReader(path));
 			line = read.readLine();
+			if (line == null)
+				return null;
 			while (!last){
 				last = ((next = read.readLine()) == null);
 				if (!last){

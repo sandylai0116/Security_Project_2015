@@ -15,6 +15,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import control.Operation;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,6 @@ public class LoginPanel extends JPanel {
 	private JTextField textField_username;
 	private JPasswordField passwordField;
 	private JTextArea textArea;
-	
 	/**
 	 * Create the panel.
 	 */
@@ -127,13 +128,33 @@ public class LoginPanel extends JPanel {
 	private void setText(String message){
 		textArea.setText(message);
 	}
-	
+	private int count = 0;
 	private class LoginButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			String username = textField_username.getText();
 			String password = String.valueOf(passwordField.getPassword());
 			if(username.isEmpty() || password.isEmpty())
 				setText("Please enter username or password.");
+			else
+				if (PMS.operation.userAuthenticate(username,password)){
+					MainPage mainPage = new MainPage(contentPane);
+					contentPane.add(mainPage, "mainPage");
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "mainPage");
+					contentPane.remove(0);
+				}else{
+					count++;
+					switch (count){
+					case 1:PMS.alertBox("Invalid Username or Password!\nPlease Try again\n2 times left", "Authentication Fails");
+						break;
+					case 2:PMS.alertBox("Invalid Username or Password!\nPlease Try again\n1 times left", "Authentication Fails");
+						break;
+					case 3:PMS.alertBox("Invalid Username or Password!\nPlease Try again\n0 times left", "Authentication Fails");
+						break;
+					}
+					if (count >= 3)
+						System.exit(0);
+				}
 
 		} 
 	} 

@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 
-public class MainPage extends JFrame {
+public class MainPage extends JPanel {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -37,80 +37,70 @@ public class MainPage extends JFrame {
 	    }
 	};
 	
-	/**
-	 * Create the frame.
-	 * @param username 
-	 */
-	public MainPage(String username) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Password Management System");  
-		setBounds(100, 100, 454, 460);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+
+	public MainPage(JPanel panelPass) { 
+		contentPane = panelPass;
 		
 		Font bold24 = new Font("Times New Roman", Font.BOLD, 24);
+		//JPanel panel = new JPanel();
+		setBounds(100, 100, 450, 430);
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 450, 430);
-		panel.setLayout(null);
-		contentPane.add(panel);
-		
-		JLabel lblRegistration = new JLabel("Welcome, "+username);
+		JLabel lblRegistration = new JLabel("Welcome, "+PMS.operation.getUsername());
 		lblRegistration.setBounds(0, 0, 438, 28);
-		panel.add(lblRegistration);
+		add(lblRegistration);
 		lblRegistration.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistration.setFont(bold24);
 		
 		JLabel keyLabel = new JLabel("Master Key");
 		keyLabel.setBounds(14, 40, 80, 25);
-		panel.add(keyLabel);
+		add(keyLabel);
 		
 		keyText = new JPasswordField();
 		keyText.setBounds(104, 40, 300, 25);
-		panel.add(keyText);
+		add(keyText);
 		
 		JLabel domainLabel = new JLabel("Domain");
 		domainLabel.setBounds(14, 70, 80, 25);
-		panel.add(domainLabel);
+		add(domainLabel);
 		
 		domainText = new JTextField();
 		domainText.setBounds(104, 70, 300, 25);
-		panel.add(domainText);
+		add(domainText);
 		
 		JLabel usernameLabel = new JLabel("Username");
 		usernameLabel.setBounds(14, 100, 80, 25);
-		panel.add(usernameLabel);
+		add(usernameLabel);
 		
 		usernameText = new JTextField();
 		usernameText.setBounds(104, 100, 300, 25);
-		panel.add(usernameText);
+		add(usernameText);
 		
 		JLabel passphraseLabel = new JLabel("Passphrase");
 		passphraseLabel.setBounds(14, 130, 80, 25);
-		panel.add(passphraseLabel);
+		add(passphraseLabel);
 		
 		passphraseText = new JTextField();
 		passphraseText.setBounds(104, 130, 300, 25);
-		panel.add(passphraseText);
+		add(passphraseText);
 		
 		JButton addButton = new JButton("Add");
 		addButton.setBounds(10, 167, 117, 29);
-		panel.add(addButton);
+		add(addButton);
 		
 		JButton updateButton = new JButton("Update");
 		updateButton.setBounds(147, 167, 117, 29);
-		panel.add(updateButton);
+		add(updateButton);
 		
 		JButton deleteButton = new JButton("Delete");
 		deleteButton.setBounds(287, 167, 117, 29);
-		panel.add(deleteButton);
+		add(deleteButton);
 		
 		message = new JLabel("");
 		message.setForeground(Color.RED);
 		message.setBounds(14, 202, 424, 16);
-		panel.add(message);
+		add(message);
 		
         String[] columnsHeader = new String[] {
                 "Domain","Username","Passphrase"
@@ -125,8 +115,9 @@ public class MainPage extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane(table);	
 		scrollPane.setBounds(14, 230, 424, 182);
-		panel.add(scrollPane);
-            
+		add(scrollPane);
+
+        
         AddButtonListener addListener = new AddButtonListener();
         addButton.addActionListener(addListener);
         

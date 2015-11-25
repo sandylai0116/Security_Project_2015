@@ -17,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import control.Operation;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +31,6 @@ public class RegisterPanel extends JPanel {
 	private JTextField textField_username;
 	private JPasswordField passwordField;
 	private JTextArea textArea;
-	
 	/**
 	 * Create the panel.
 	 */
@@ -135,19 +136,28 @@ public class RegisterPanel extends JPanel {
 			final String username = textField_username.getText();
 			String password = String.valueOf(passwordField.getPassword());
 			if(username.isEmpty() || password.isEmpty())
-				setText("Please enter username or password.");
+				PMS.alertBox("Please enter username or password.","Alert!");
 			else{
-				SwingUtilities.getWindowAncestor(contentPane).dispose();
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							MainPage mainPage = new MainPage(username);
-							mainPage.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
+				if (PMS.operation.isUsernameValid(username)){
+					PMS.operation.register(username, password);
+					MainPage mainPage = new MainPage(contentPane);
+					contentPane.add(mainPage, "mainPage");
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "mainPage");
+					contentPane.remove(0);
+					/*SwingUtilities.getWindowAncestor(contentPane).dispose();
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								MainPage mainPage = new MainPage(username);
+								mainPage.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-					}
-				});	
+					});	*/
+				}else
+					PMS.alertBox("Username exists!\nTry another one","Alert!");
 			}
 		} 
 	} 
