@@ -32,7 +32,7 @@ public class Operation {
 				user.remove("integrity");
 				user.remove("body");	//remove useless dump data
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -73,6 +73,12 @@ public class Operation {
 	}
 	public List<SubAccount> keyGen(List<SubAccount> domain, String masterKey, int LengthOfPw){
 		return secure.keyGenerator(this.username, this.pw, domain,masterKey, LengthOfPw);
+	}
+	public void printHashMap(){
+		for (Map.Entry<String, String> each : user.entrySet())
+		{
+			System.out.printf("%s\t%s\n",each.getKey(),each.getValue());
+		}
 	}
 	public void saveChanges(List<SubAccount> domain) throws IOException{
 		readIO.put_start();

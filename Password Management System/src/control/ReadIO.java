@@ -23,7 +23,7 @@ public class ReadIO {
 		this.path = path;
 		this.file = new File(path);
 	}
-	public HashMap<String,String> get() throws IOException{
+	public HashMap<String,String> get() throws Exception{
 		HashMap<String,String> user_all = new HashMap<String,String>();
 		String line = "";
 		String integrityKey = "";
@@ -35,26 +35,22 @@ public class ReadIO {
 			line = read.readLine();
 			if (line == null)
 				return null;
-			try{
-				while (!last){
-					last = ((next = read.readLine()) == null);
-					if (!last){
-						String user= line.substring(0, USER_INFO_LENGTH);
-						String data = line.substring(USER_INFO_LENGTH);
-						user_all.put(user, data);
-						whole += line;
-						line = next;
-					}else{
-						integrityKey = line;
-					}
+			while (!last){
+				last = ((next = read.readLine()) == null);
+				if (!last){
+					String user= line.substring(0, USER_INFO_LENGTH);
+					String data = line.substring(USER_INFO_LENGTH);
+					user_all.put(user, data);
+					whole += line;
+					line = next;
+				}else{
+					integrityKey = line;
 				}
-				user_all.put("integrity",integrityKey);
-				user_all.put("body",whole);
-				read.close();
-				return user_all;
-			}catch (Exception e){
-				return null;
 			}
+			user_all.put("integrity",integrityKey);
+			user_all.put("body",whole);
+			read.close();
+			return user_all;
 		}else{
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path),"UTF-8"));
 			writer.close();
