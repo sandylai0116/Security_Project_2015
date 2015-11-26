@@ -57,7 +57,7 @@ public class MainPage extends JPanel {
 		setLayout(null);
 		
 		JLabel lblRegistration = new JLabel("Welcome, "+PMS.operation.getUsername());
-		lblRegistration.setBounds(14, 2, 680, 28);
+		lblRegistration.setBounds(87, 2, 438, 28);
 		add(lblRegistration);
 		lblRegistration.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistration.setFont(bold24);
@@ -140,6 +140,18 @@ public class MainPage extends JPanel {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.setDefaultEditor(table.getColumnClass(i), singleclick);
         } 
+        displayDomain();
+	}
+	public void displayDomain(){
+		model = (DefaultTableModel) table.getModel();
+		int row = 0;
+		List<SubAccount> subAccount = PMS.operation.displayDomain();
+		if (subAccount != null)
+			while(row < table.getRowCount()){
+				model.setValueAt(subAccount.get(row).getDomain(), row, 0);
+				model.setValueAt(subAccount.get(row).getUsername(), row, 1);
+				row++;
+			}
 	}
 	public boolean checkFieldEmpty(){
 		if (table.isEditing())

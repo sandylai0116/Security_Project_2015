@@ -67,7 +67,9 @@ public class Operation {
 		this.pw = pw;
 	}
 	public List<SubAccount> displayDomain(){
-		return secure.decryptionSubAccount(this.username,this.pw,this.cipher);
+		if (this.cipher!="")
+			return secure.decryptionSubAccount(this.username,this.pw,this.cipher);
+		else return null;
 	}
 	public List<SubAccount> keyGen(List<SubAccount> domain, String masterKey, int LengthOfPw){
 		return secure.keyGenerator(this.username, this.pw, domain,masterKey, LengthOfPw);
