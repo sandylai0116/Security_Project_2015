@@ -43,7 +43,6 @@ public class Secure {
 		String output = null;
 		String encryptionKey = DigestUtils.sha512Hex(username + pw + salt);
 		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
-		System.out.println(encryptionKey.getBytes());
 		try {
 			byte[] cipher = encrypt(serializedString, encryptionKey);
 			output = new String(cipher, "ISO-8859-1");
@@ -137,14 +136,14 @@ public class Secure {
     }
 	
 	private static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
-	    Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+	    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
 	    SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
-	    cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
+	    cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));	
 	    return cipher.doFinal(plainText.getBytes("UTF-8"));
 	  }
 
 	private static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
-	    Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+	    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
 	    SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
 	    cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
 	    return new String(cipher.doFinal(cipherText),"UTF-8");
@@ -171,4 +170,5 @@ public class Secure {
 		int position = input%alphanum.length();
 		return alphanum.substring(position,position+1);
 	}
+	
 }
