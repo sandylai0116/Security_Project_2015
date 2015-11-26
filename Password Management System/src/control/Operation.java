@@ -78,7 +78,8 @@ public class Operation {
 		String h2 = secure.hash_SHA1(this.pw);
 		String whole = "";
 		if(user!=null){
-			user.remove(h1.concat(h2));// null when new user
+			if (user.containsKey(h1.concat(h2)))
+				user.remove(h1.concat(h2));// null when new user
 			for (Map.Entry<String, String> each : user.entrySet())
 			{
 				readIO.put(each.getKey(),each.getValue());

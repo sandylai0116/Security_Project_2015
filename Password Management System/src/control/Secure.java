@@ -43,7 +43,7 @@ public class Secure {
 		String output = null;
 		String encryptionKey = DigestUtils.sha512Hex(username + pw + salt);
 		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
-		System.out.println(encryptionKey.length());
+		System.out.println(encryptionKey.getBytes());
 		try {
 			byte[] cipher = encrypt(serializedString, encryptionKey);
 			output = new String(cipher, "ISO-8859-1");

@@ -160,7 +160,7 @@ public class MainPage extends JPanel {
 				row++;
 			}
 			List<SubAccount> temp = new ArrayList<SubAccount>();
-			temp = PMS.operation.keyGen(subAccount,keyText.getPassword().toString(),8);
+			temp = PMS.operation.keyGen(subAccount,String.valueOf(keyText.getPassword()),8);
 			row = 0;
 			while(row < table.getRowCount()){
 				model.setValueAt(temp.get(row).getPassword(), row, 2);
