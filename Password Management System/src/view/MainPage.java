@@ -57,7 +57,7 @@ public class MainPage extends JPanel {
 		setLayout(null);
 		
 		JLabel lblRegistration = new JLabel("Welcome, "+PMS.operation.getUsername());
-		lblRegistration.setBounds(87, 2, 438, 28);
+		lblRegistration.setBounds(14, 2, 680, 28);
 		add(lblRegistration);
 		lblRegistration.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistration.setFont(bold24);

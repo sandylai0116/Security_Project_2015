@@ -42,7 +42,7 @@ public class LoginPanel extends JPanel {
 		
 		JTextArea title = new JTextArea();
 		title.setEditable(false);
-		title.setBackground(SystemColor.control);
+		title.setBackground(SystemColor.window);
 		title.setFont(bold24);
 		title.setText("Login");
 		topJPanel.add(title);

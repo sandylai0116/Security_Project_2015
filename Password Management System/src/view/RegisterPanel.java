@@ -44,7 +44,7 @@ public class RegisterPanel extends JPanel {
 		
 		JTextArea title = new JTextArea();
 		title.setEditable(false);
-		title.setBackground(SystemColor.control);
+		title.setBackground(SystemColor.window);
 		title.setFont(bold24);
 		title.setText("Registration");
 		topJPanel.add(title);
@@ -137,27 +137,30 @@ public class RegisterPanel extends JPanel {
 			String password = String.valueOf(passwordField.getPassword());
 			if(username.isEmpty() || password.isEmpty())
 				PMS.alertBox("Please enter username or password.","Alert!");
-			else{
-				if (PMS.operation.isUsernameValid(username)){
-					PMS.operation.register(username, password);
-					MainPage mainPage = new MainPage(contentPane);
-					contentPane.add(mainPage, "mainPage");
-					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-					cardLayout.show(contentPane, "mainPage");
-					contentPane.remove(0);
-					/*SwingUtilities.getWindowAncestor(contentPane).dispose();
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							try {
-								MainPage mainPage = new MainPage(username);
-								mainPage.setVisible(true);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});	*/
-				}else
-					PMS.alertBox("Username exists!\nTry another one","Alert!");
+			else {
+				if (password.length()>=4) {
+					if (PMS.operation.isUsernameValid(username)){
+							PMS.operation.register(username, password);
+							MainPage mainPage = new MainPage(contentPane);
+							contentPane.add(mainPage, "mainPage");
+							CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+							cardLayout.show(contentPane, "mainPage");
+							contentPane.remove(0);
+							/*SwingUtilities.getWindowAncestor(contentPane).dispose();
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									try {
+										MainPage mainPage = new MainPage(username);
+										mainPage.setVisible(true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});	*/
+					} else
+						PMS.alertBox("Username exists!\nTry another one","Alert!");
+				}  else 
+					PMS.alertBox("Minimum password length = 4","Invalid Length");
 			}
 		} 
 	} 
