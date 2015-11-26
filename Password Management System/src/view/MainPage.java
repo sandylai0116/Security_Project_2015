@@ -128,7 +128,6 @@ public class MainPage extends JPanel {
 		public void actionPerformed(ActionEvent event) {
 			message.setText("");
 			model = (DefaultTableModel) table.getModel();
-			model.addRow(new Object[] {"","",""});
 			int row = 0;
 			List<SubAccount> subAccount = new ArrayList<SubAccount>();
 			while(row < table.getRowCount()){
