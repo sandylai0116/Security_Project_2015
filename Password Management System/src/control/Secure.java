@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import model.SubAccount;
@@ -45,7 +47,7 @@ public class Secure {
 		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
 		try {
 			byte[] cipher = encrypt(serializedString, encryptionKey);
-			output = new String(cipher, "ISO-8859-1");
+			output = Hex.encodeHexString(cipher);
 		} catch (Exception e) {
 			System.out.println("Error in encrypting subAccount!");
 			e.printStackTrace();
@@ -60,7 +62,7 @@ public class Secure {
 		encryptionKey = passwordGeneratorBasedOnHashString(encryptionKey,16);
 		String decrypted = null;
 		try {
-			byte[] cipherinBytes = cipher.getBytes("ISO-8859-1");
+			byte[] cipherinBytes = Hex.decodeHex(cipher.toCharArray());
 			decrypted = decrypt(cipherinBytes, encryptionKey);
 			if (decrypted == null)  throw new Exception();
 		} catch (Exception e1) {
