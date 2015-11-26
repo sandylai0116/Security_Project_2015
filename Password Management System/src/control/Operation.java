@@ -77,11 +77,13 @@ public class Operation {
 		String h1 = secure.hash_SHA1(this.username);
 		String h2 = secure.hash_SHA1(this.pw);
 		String whole = "";
-		user.remove(h1.concat(h2));// null when new user
-		for (Map.Entry<String, String> each : user.entrySet())
-		{
-			readIO.put(each.getKey(),each.getValue());
-			whole = whole.concat(each.getKey().concat(each.getValue()));
+		if(user!=null){
+			user.remove(h1.concat(h2));// null when new user
+			for (Map.Entry<String, String> each : user.entrySet())
+			{
+				readIO.put(each.getKey(),each.getValue());
+				whole = whole.concat(each.getKey().concat(each.getValue()));
+			}
 		}
 		String cipher = secure.encryptionSubAccount(this.username,this.pw,domain);
 		whole = whole.concat(h1.concat(h2).concat(cipher));

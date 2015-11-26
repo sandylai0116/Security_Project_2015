@@ -165,12 +165,9 @@ public class MainPage extends JPanel {
 			row = 0;
 			while(row < table.getRowCount()){
 				model.setValueAt(temp.get(row).getPassword(), row, 2);
-			row++;
-		}
+				row++;
+			}
 		} 
-	}
-	public void displayPw(){
-		
 	}
 	private class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
