@@ -41,8 +41,8 @@ public class LoginPanel extends JPanel {
 		JPanel topJPanel = new JPanel();
 		
 		JTextArea title = new JTextArea();
+		title.setBackground(SystemColor.control);
 		title.setEditable(false);
-		title.setBackground(SystemColor.window);
 		title.setFont(bold24);
 		title.setText("Login");
 		topJPanel.add(title);

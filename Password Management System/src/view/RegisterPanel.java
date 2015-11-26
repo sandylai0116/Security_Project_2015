@@ -43,8 +43,8 @@ public class RegisterPanel extends JPanel {
 		JPanel topJPanel = new JPanel();
 		
 		JTextArea title = new JTextArea();
+		title.setBackground(SystemColor.control);
 		title.setEditable(false);
-		title.setBackground(SystemColor.window);
 		title.setFont(bold24);
 		title.setText("Registration");
 		topJPanel.add(title);

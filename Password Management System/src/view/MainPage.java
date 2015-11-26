@@ -2,33 +2,36 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.ListSelectionModel;
 
 import model.SubAccount;
-
-import javax.swing.JSpinner;
 
 public class MainPage extends JPanel {
 
@@ -37,6 +40,7 @@ public class MainPage extends JPanel {
 	private JPasswordField keyText;
 	private JLabel message;
 	private JSpinner spinner;
+	private Timer timer;
 	private DefaultTableModel model = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row,int column){
@@ -93,6 +97,8 @@ public class MainPage extends JPanel {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
         table.setVisible(true);
+        clipListener clip = new clipListener();
+        table.addKeyListener(clip);
 		
 		JScrollPane scrollPane = new JScrollPane(table);	
 		scrollPane.setBounds(14, 79, 438, 227);
@@ -115,6 +121,10 @@ public class MainPage extends JPanel {
 		JLabel lengthlabel = new JLabel("Password length");
 		lengthlabel.setBounds(319, 40, 100, 25);
 		add(lengthlabel);
+		
+		JLabel lblPressCtrlcTo = new JLabel("Press CTRL+C to Copy the selected password");
+		lblPressCtrlcTo.setBounds(14, 316, 438, 28);
+		add(lblPressCtrlcTo);
 
         
         AddButtonListener addListener = new AddButtonListener();
@@ -133,14 +143,15 @@ public class MainPage extends JPanel {
         //table.addMouseListener(rowClickListener);
         
         
-        DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+        /*DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
         singleclick.setClickCountToStart(1);
 
-        //set the editor as default on every column
+        set the editor as default on every column
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.setDefaultEditor(table.getColumnClass(i), singleclick);
-        } 
+        } */
         displayDomain();
+        
 	}
 	public void displayDomain(){
 		model = (DefaultTableModel) table.getModel();
@@ -175,12 +186,43 @@ public class MainPage extends JPanel {
 		}
 		if (empty == true)
 			PMS.alertBox("Missing domain information or username", "Missing fields");
-		if (String.valueOf(keyText)==null){
-			empty = true;
-			PMS.alertBox("You don't have a master key", "Missing fields");
-		}
+
 			
 		return empty;
+	}
+	private class clipListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+        @Override
+        public void keyPressed(KeyEvent e) {
+            
+        }
+		@Override
+		public void keyReleased(KeyEvent e) {
+			
+			if ((e.getKeyCode() == KeyEvent.VK_C) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+            	model = (DefaultTableModel) table.getModel();
+            	//model.getValueAt(row, 0).toString()
+            	String pw = model.getValueAt((int)table.getSelectedRow(), 2).toString();
+            	System.out.println(pw);
+            	StringSelection selection = new StringSelection(pw);
+            	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, selection);
+            	message.setText("Password Copied\nClipboard will be erased after 5 seconds");
+            }
+			timer = new Timer();
+			timer.schedule(new TimerTask(){
+				public void run(){
+					message.setText("");
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					StringSelection selection = new StringSelection("");
+					clipboard.setContents(selection, selection);
+				}
+			}, 5000);
+			
+		}
+
 	}
 	private class saveButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
@@ -238,6 +280,7 @@ public class MainPage extends JPanel {
 			message.setText("");
 			model = (DefaultTableModel) table.getModel();
 			model.addRow(new Object[] {"","",""});
+
 			
 		} 
 	}
