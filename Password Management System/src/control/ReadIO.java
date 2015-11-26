@@ -3,9 +3,13 @@ package control;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 public class ReadIO {
@@ -27,7 +31,7 @@ public class ReadIO {
 		boolean last = false;
 		String next;
 		if (file.exists()){
-			read = new BufferedReader(new FileReader(path));
+			read =new BufferedReader(new InputStreamReader( new FileInputStream(path), "UTF8"));
 			line = read.readLine();
 			if (line == null)
 				return null;
@@ -52,14 +56,14 @@ public class ReadIO {
 				return null;
 			}
 		}else{
-			writer = new BufferedWriter(new FileWriter(path));
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path),"UTF-8"));
 			writer.close();
 			return null;
 		}
 		
 	}
 	public void put_start() throws IOException{
-		writer = new BufferedWriter(new FileWriter(path));
+		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path),"UTF-8"));
 	}
 	public void put(String name_pw,String cipherBody) throws IOException{
 		String cipher = name_pw.concat(cipherBody).concat("\n");
