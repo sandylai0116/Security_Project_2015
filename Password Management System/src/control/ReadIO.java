@@ -31,22 +31,26 @@ public class ReadIO {
 			line = read.readLine();
 			if (line == null)
 				return null;
-			while (!last){
-				last = ((next = read.readLine()) == null);
-				if (!last){
-					String user= line.substring(0, USER_INFO_LENGTH);
-					String data = line.substring(USER_INFO_LENGTH);
-					user_all.put(user, data);
-					whole += line;
-					line = next;
-				}else{
-					integrityKey = line;
+			try{
+				while (!last){
+					last = ((next = read.readLine()) == null);
+					if (!last){
+						String user= line.substring(0, USER_INFO_LENGTH);
+						String data = line.substring(USER_INFO_LENGTH);
+						user_all.put(user, data);
+						whole += line;
+						line = next;
+					}else{
+						integrityKey = line;
+					}
 				}
+				user_all.put("integrity",integrityKey);
+				user_all.put("body",whole);
+				read.close();
+				return user_all;
+			}catch (Exception e){
+				return null;
 			}
-			user_all.put("integrity",integrityKey);
-			user_all.put("body",whole);
-			read.close();
-			return user_all;
 		}else{
 			writer = new BufferedWriter(new FileWriter(path));
 			writer.close();

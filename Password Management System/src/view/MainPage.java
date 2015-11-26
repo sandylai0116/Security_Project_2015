@@ -129,8 +129,8 @@ public class MainPage extends JPanel {
         generateButtonListener generateListener = new generateButtonListener();
         generateButton.addActionListener(generateListener);
    
-        RowClickListener rowClickListener = new RowClickListener();
-        table.addMouseListener(rowClickListener);
+        //RowClickListener rowClickListener = new RowClickListener();
+        //table.addMouseListener(rowClickListener);
         
         
         DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
@@ -242,7 +242,7 @@ public class MainPage extends JPanel {
 			
 		} 
 	}
-	
+	/*
 	private class RowClickListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent event) {
@@ -272,7 +272,7 @@ public class MainPage extends JPanel {
 			// TODO Auto-generated method stub
 			
 		}
-	} 
+	} */
 	
 
 	private class DelButtonListener implements ActionListener {
