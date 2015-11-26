@@ -147,9 +147,8 @@ public class MainPage extends JPanel {
 		int row = 0;
 		List<SubAccount> subAccount = PMS.operation.displayDomain();
 		if (subAccount != null)
-			while(row < table.getRowCount()){
-				model.setValueAt(subAccount.get(row).getDomain(), row, 0);
-				model.setValueAt(subAccount.get(row).getUsername(), row, 1);
+			while(row < subAccount.size()){
+				model.addRow(new Object[] {subAccount.get(row).getDomain(),subAccount.get(row).getUsername(),""});
 				row++;
 			}
 	}
@@ -216,7 +215,7 @@ public class MainPage extends JPanel {
 				model = (DefaultTableModel) table.getModel();
 				int row = 0;
 				List<SubAccount> subAccount = new ArrayList<SubAccount>();
-				int length = (int) spinner.getValue();
+				int length = Integer.parseInt(spinner.getValue().toString());
 				while(row < table.getRowCount()){
 						SubAccount temp = new SubAccount();
 						temp.setDomain(model.getValueAt(row, 0).toString());
