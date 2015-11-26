@@ -7,6 +7,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -33,11 +35,13 @@ import javax.swing.table.DefaultTableModel;
 
 import model.SubAccount;
 
+import javax.swing.JCheckBox;
+
 public class MainPage extends JPanel {
 
 	private JPanel contentPane;
 	private JTable table;
-	private JPasswordField keyText;
+	private JTextField keyText;
 	private JLabel message;
 	private JSpinner spinner;
 	private Timer timer;
@@ -70,7 +74,7 @@ public class MainPage extends JPanel {
 		keyLabel.setBounds(14, 40, 64, 25);
 		add(keyLabel);
 		
-		keyText = new JPasswordField();
+		keyText = new JTextField();
 		keyText.setBounds(86, 40, 223, 25);
 		add(keyText);
 		
@@ -84,7 +88,7 @@ public class MainPage extends JPanel {
 		
 		message = new JLabel("");
 		message.setForeground(Color.RED);
-		message.setBounds(14, 63, 424, 16);
+		message.setBounds(24, 305, 424, 16);
 		add(message);
 		
         String[] columnsHeader = new String[] {
@@ -101,7 +105,7 @@ public class MainPage extends JPanel {
         table.addKeyListener(clip);
 		
 		JScrollPane scrollPane = new JScrollPane(table);	
-		scrollPane.setBounds(14, 79, 438, 227);
+		scrollPane.setBounds(24, 75, 438, 227);
 		add(scrollPane);
 		
 		JButton generateButton = new JButton("Generate");
@@ -123,7 +127,7 @@ public class MainPage extends JPanel {
 		add(lengthlabel);
 		
 		JLabel lblPressCtrlcTo = new JLabel("Press CTRL+C to Copy the selected password");
-		lblPressCtrlcTo.setBounds(14, 316, 438, 28);
+		lblPressCtrlcTo.setBounds(24, 320, 438, 28);
 		add(lblPressCtrlcTo);
 
         
@@ -138,18 +142,8 @@ public class MainPage extends JPanel {
         
         generateButtonListener generateListener = new generateButtonListener();
         generateButton.addActionListener(generateListener);
-   
-        //RowClickListener rowClickListener = new RowClickListener();
-        //table.addMouseListener(rowClickListener);
         
-        
-        /*DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
-        singleclick.setClickCountToStart(1);
-
-        set the editor as default on every column
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.setDefaultEditor(table.getColumnClass(i), singleclick);
-        } */
+ 
         displayDomain();
         
 	}
@@ -203,13 +197,11 @@ public class MainPage extends JPanel {
 			
 			if ((e.getKeyCode() == KeyEvent.VK_C) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
             	model = (DefaultTableModel) table.getModel();
-            	//model.getValueAt(row, 0).toString()
             	String pw = model.getValueAt((int)table.getSelectedRow(), 2).toString();
-            	System.out.println(pw);
             	StringSelection selection = new StringSelection(pw);
             	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(selection, selection);
-            	message.setText("Password Copied\nClipboard will be erased after 5 seconds");
+            	message.setText("Password Copied.  Clipboard will be erased after 8 seconds");
             }
 			timer = new Timer();
 			timer.schedule(new TimerTask(){
@@ -219,7 +211,7 @@ public class MainPage extends JPanel {
 					StringSelection selection = new StringSelection("");
 					clipboard.setContents(selection, selection);
 				}
-			}, 5000);
+			}, 8000);
 			
 		}
 
@@ -266,7 +258,7 @@ public class MainPage extends JPanel {
 					row++;
 				}
 				List<SubAccount> temp = new ArrayList<SubAccount>();
-				temp = PMS.operation.keyGen(subAccount,String.valueOf(keyText.getPassword()),length);
+				temp = PMS.operation.keyGen(subAccount,String.valueOf(keyText.getText()),length);
 				row = 0;
 				while(row < table.getRowCount()){
 					model.setValueAt(temp.get(row).getPassword(), row, 2);
